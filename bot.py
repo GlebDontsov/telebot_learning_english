@@ -17,10 +17,9 @@ async def main():
     logger.info('Starting bot')
     config: Config = load_config('.env')
 
-    storage: MemoryStorage = MemoryStorage()
     bot: Bot = Bot(token=config.tg_bot.token,
                    parse_mode='HTML')
-    dp: Dispatcher = Dispatcher(storage=storage)
+    dp: Dispatcher = Dispatcher()
 
     dp.include_router(user_handlers.router)
     dp.include_router(other_handlers.router)

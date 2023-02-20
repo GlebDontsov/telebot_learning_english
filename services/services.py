@@ -1,6 +1,7 @@
 import random
 import json
 from googletrans import Translator
+import gtts
 
 
 def get_words() -> dict:
@@ -20,4 +21,9 @@ def get_word_translation(text: str, src: str, dest: str) -> str:
     translator = Translator()
     result = translator.translate(text, src=src, dest=dest)
     return result.text
+
+
+def get_voice(text: str) -> None:
+    audio = gtts.gTTS(text)
+    audio.save("audio.opus")
 
