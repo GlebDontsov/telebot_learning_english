@@ -25,9 +25,10 @@ async def process_help_command(message: Message):
 @router.message(Command(commands=['newword']))
 async def process_new_word(message: Message):
     word, translation = get_word(words)
+    user_id = message.from_user.id
     await message.answer(text=f"{word} - {translation}", reply_markup=en_ru_word_button)
-    get_voice(word)
-    await message.answer_audio(audio=FSInputFile(path='audio.opus'))
+    get_voice(word, user_id)
+    await message.answer_audio(audio=FSInputFile(path=f'{user_id}.opus'))
 
 
 @router.message(Text(text=LEXICON_RU['ru-en']))
@@ -54,14 +55,17 @@ async def process_cancel(message: Message, state: FSMContext):
 
 @router.message(FSMFillTranslationEnToRu.translation_en_ru)
 async def process_translation_en_to_ru_sent(message: Message):
-    await message.answer(text=f'{get_word_translation(message.text, "en", "ru")}')
-    get_voice(message.text)
-    await message.answer_audio(audio=FSInputFile(path='audio.opus'))
+    user_id = message.from_user.id
+    user_message = message.text
+    await message.answer(text=f'{get_word_translation(user_message, "en", "ru")}')
+    get_voice(user_message, user_id)
+    await message.answer_audio(audio=FSInputFile(path=f'{user_id}.opus'))
 
 
 @router.message(FSMFillTranslationRuToEn.translation_ru_en)
 async def process_translation_ru_to_en_sent(message: Message):
+    user_id = message.from_user.id
     translation = get_word_translation(message.text, "ru", "en")
     await message.answer(text=f'{translation}')
-    get_voice(translation)
-    await message.answer_audio(audio=FSInputFile(path='audio.opus'))
+    get_voice(translation, user_id)
+    await message.answer_audio(audio=FSInputFile(path=f'{user_id}.opus'))

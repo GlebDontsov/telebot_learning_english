@@ -23,7 +23,7 @@ def get_word_translation(text: str, src: str, dest: str) -> str:
     return result.text
 
 
-def get_voice(text: str) -> None:
+def get_voice(text: str, filename: int) -> None:
     audio = gtts.gTTS(text)
-    audio.save("audio.opus")
+    audio.save(f"{str(filename)}.opus")
 
