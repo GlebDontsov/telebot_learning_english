@@ -22,6 +22,7 @@ async def process_help_command(message: Message):
 
 
 @router.message(Text(text=LEXICON_RU['new_word']))
+@router.message(Command(commands=['newword']))
 async def process_new_word(message: Message):
     word, translation = get_word(words)
     await message.answer(text=f"{word} - {translation}", reply_markup=en_ru_word_button)
@@ -30,13 +31,17 @@ async def process_new_word(message: Message):
 
 
 @router.message(Text(text=LEXICON_RU['ru-en']))
+@router.message(Command(commands=['fromrutoen']))
 async def process_translate_ru_to_en(message: Message, state: FSMContext):
+    await state.clear()
     await message.answer(text=f'{LEXICON_RU["ru_text"]}', reply_markup=cancel_button)
     await state.set_state(FSMFillTranslationRuToEn.translation_ru_en)
 
 
 @router.message(Text(text=LEXICON_RU['en-ru']))
+@router.message(Command(commands=['fromentoru']))
 async def process_translate_en_to_ru(message: Message, state: FSMContext):
+    await state.clear()
     await message.answer(text=f'{LEXICON_RU["en_text"]}', reply_markup=cancel_button)
     await state.set_state(FSMFillTranslationEnToRu.translation_en_ru)
 
@@ -48,17 +53,15 @@ async def process_cancel(message: Message, state: FSMContext):
 
 
 @router.message(FSMFillTranslationEnToRu.translation_en_ru)
-async def process_translation_en_to_ru_sent(message: Message, state: FSMContext):
-    await message.answer(text=f'{get_word_translation(message.text, "en", "ru")}', reply_markup=en_ru_word_button)
+async def process_translation_en_to_ru_sent(message: Message):
+    await message.answer(text=f'{get_word_translation(message.text, "en", "ru")}')
     get_voice(message.text)
     await message.answer_audio(audio=FSInputFile(path='audio.opus'))
-    await state.clear()
 
 
 @router.message(FSMFillTranslationRuToEn.translation_ru_en)
-async def process_translation_ru_to_en_sent(message: Message, state: FSMContext):
+async def process_translation_ru_to_en_sent(message: Message):
     translation = get_word_translation(message.text, "ru", "en")
-    await message.answer(text=f'{translation}', reply_markup=en_ru_word_button)
+    await message.answer(text=f'{translation}')
     get_voice(translation)
     await message.answer_audio(audio=FSInputFile(path='audio.opus'))
-    await state.clear()

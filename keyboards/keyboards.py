@@ -16,5 +16,3 @@ button_cancel: KeyboardButton = KeyboardButton(text=LEXICON_RU['cancel'])
 cancel_button: ReplyKeyboardMarkup = ReplyKeyboardMarkup(
     keyboard=[[button_cancel]],
     resize_keyboard=True)
-
-
