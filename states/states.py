@@ -1,9 +1,13 @@
 from aiogram.fsm.state import State, StatesGroup
 
 
-class FSMFillTranslationEnToRu(StatesGroup):
+class FSMTranslationEnToRu(StatesGroup):
     translation_en_ru = State()
 
 
-class FSMFillTranslationRuToEn(StatesGroup):
+class FSMTranslationRuToEn(StatesGroup):
     translation_ru_en = State()
+
+
+class FSMChooseSets(StatesGroup):
+    choose_set = State()
