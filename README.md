@@ -13,7 +13,7 @@
 
 ## Запуск бота:
 1. Используйте Python 3.10.
-2. Склонируйте к себе репозиторий бота
+2. Склонируйте к себе репозиторий бота <br/>
 `git clone https://github.com/GlebDontsov/chatbot.git`
 3. Установите необходимые библиотеки для работы с ботом:  
 `pip install -r requirements.txt`
