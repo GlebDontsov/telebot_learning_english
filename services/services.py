@@ -43,7 +43,7 @@ def get_voice(text: str, filename: int) -> None:
     audio.save(f"voices/{str(filename)}.opus")
 
 
-def update_data(callback, data):
+def update_data(callback, data) -> None:
     if callback.data == "know":
         data['choose_set'][3] += 1
     else:
