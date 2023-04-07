@@ -6,6 +6,7 @@ from lexicon.lexicon_ru import LEXICON_RU
 from services.services import get_words, get_word, get_word_translation, get_voice, get_sets, get_key_from_set, update_data
 from states.states import FSMTranslationEnToRu, FSMTranslationRuToEn, FSMChooseSets
 from aiogram.fsm.context import FSMContext
+from bot import db
 
 router: Router = Router()
 words: dict = get_words()
@@ -15,6 +16,10 @@ sets: dict = get_sets()
 @router.message(CommandStart())
 async def process_start_command(message: Message, state: FSMContext):
     await state.clear()
+    if not db.existsUser(message.from_user.id):
+        db.addUser(message.from_user.id,
+                   message.from_user.first_name,
+                   message.from_user.last_name)
     await message.answer(text=LEXICON_RU['/start'], reply_markup=en_ru_word_button)
 
 
